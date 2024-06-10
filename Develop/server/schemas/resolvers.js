@@ -5,7 +5,7 @@ const resolvers = {
     Query: {
         me: async (parent, args, context) => {
             if(context.user){
-            const userData = await User.findOne({_id: context.user_id}).select('-password');
+            const userData = await User.findOne({_id: context.user._id}).select('-password');
             return userData;
             }
         },
@@ -21,20 +21,22 @@ const resolvers = {
         login: async (parent, { email, password }) => {
             const user = await User.findOne({ email });
             if (!user || !(await user.isCorrectPassword(password))) {
-                throw new AuthenticationError('Incorrect credentials');
+                throw AuthenticationError;('Incorrect credentials');
             }
             const token = signToken(user);
             return { token, user };
         },
         saveBook: async (parent, {bookData}, context) => {
+            console.log('resolver called');
             if(context.user){
-                const updatedUser = await User.findOneAndUpdate(
+                const updatedUser = await User.findByIdAndUpdate(
                     { _id: context.user._id },
                     { $push: { savedBooks: bookData } },
                     { new: true, runValidators: true }
                 );
                 return updatedUser;
         }
+        throw AuthenticationError;('Error');
         },
         removeBook: async (parent, {bookID}, context) => {
             if(context.user_id){

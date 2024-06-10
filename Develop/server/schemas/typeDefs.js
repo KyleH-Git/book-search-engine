@@ -3,7 +3,6 @@ const typeDefs = `
         _id: ID!
         username: String!
         email: String!
-        bookCount: Int
         savedBooks: [Book]
     }
 
@@ -25,7 +24,7 @@ const typeDefs = `
         authors: [String]!
         description: String!
         title: String!
-        bookID: String!
+        bookId: String!
         image: String!
         link: String
     }

@@ -21,13 +21,12 @@ const resolvers = {
         login: async (parent, { email, password }) => {
             const user = await User.findOne({ email });
             if (!user || !(await user.isCorrectPassword(password))) {
-                throw AuthenticationError;('Incorrect credentials');
+                throw AuthenticationError;
             }
             const token = signToken(user);
             return { token, user };
         },
         saveBook: async (parent, {bookData}, context) => {
-            console.log('resolver called');
             if(context.user){
                 const updatedUser = await User.findByIdAndUpdate(
                     { _id: context.user._id },
@@ -36,17 +35,20 @@ const resolvers = {
                 );
                 return updatedUser;
         }
-        throw AuthenticationError;('Error');
+        throw AuthenticationError;
         },
-        removeBook: async (parent, {bookID}, context) => {
-            if(context.user_id){
-                const updatedUser = await User.findOneAndUpdate(
+        removeBook: async (parent, {bookId}, context) => {
+       
+        if(context.user){
+            console.log('resolver')
+                const updatedUser = await User.findByIdAndUpdate(
                     { _id: context.user._id },
-                    { $pull: { savedBooks: {bookID} }},
-                    { new: true }
+                    { $pull: { savedBooks: {bookId} } },
+                    { new: true, runValidators: true }
                 );
             return updatedUser;
             }
+        throw AuthenticationError;
         }
     },
 };

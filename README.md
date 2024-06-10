@@ -1,7 +1,7 @@
 # book-search-engine
 A way to search and store books from the google books API.
 
-![alt text](./Develop/client/src/assets/images/readmeimg.png)
+![alt text](.//client/src/assets/images/readmeimg.png)
 
 ## Site Link
 https://book-search-engine-20cy.onrender.com/
